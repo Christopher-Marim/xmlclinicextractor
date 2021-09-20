@@ -1,12 +1,24 @@
+import { useEffect } from "react";
+import { useHistory } from "react-router";
+import { Header } from "../components/Header";
+import { ListClients } from "../components/ListClients";
 import { useAuth } from "../hooks/auth";
+import { Container } from "../styles/home";
 
-export function Home(){
+export function Home() {
+  const { user } = useAuth();
+  const history = useHistory();
 
-    const {user} =useAuth();
+  useEffect(() => {
+    if (!user) {
+      history.push("/");
+    }
+  });
 
-    return(
-        <div>
-            {user?.nome}
-        </div>
-    )
+  return (
+    <Container>
+      <Header />
+      <ListClients />
+    </Container>
+  );
 }
