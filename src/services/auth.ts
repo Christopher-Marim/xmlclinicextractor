@@ -16,24 +16,19 @@ interface RequestSignIn {
 export async function signIn({ login, senha }: RequestSignIn): Promise<Response> {
   console.log(login, senha)
 
-  //const { data } = await api.get(`/acessoapp?method=loadAll&usuarioApp=${login}&senhaApp=${senha}`)
-  //const user = data.data[0]
-  //console.log(user)
+  const { data } = await api.get(`/Acessoappcoleta?method=loadAll&usuarioApp=${login}&senhaApp=${senha}`)
+  const user = data.data[0]
+  console.log(user)
   return new Promise((resolve) => {
-    setTimeout(() => {resolve({
-     // token: `${user?.chave}`,
-     token:'12345698asdas51d6a5s4d',
-      /* user: {
-        nome: `${user?.nome}`,
-        login: `${login}`,
-        senha: `${senha}`,
-      } */
-      user:{
-        nome: 'Christopher marim',
+    resolve({
+      token: `${user?.chave}`,
+      user: {
+        nome: `${user?.nomeusuario}`,
         login: `${login}`,
         senha: `${senha}`,
       }
-    });}, 2000)
-    
+
+    });
+
   });
 }

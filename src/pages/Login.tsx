@@ -50,7 +50,13 @@ export function Login() {
       senha: passwordText,
     };
     await signIn(login);
-    history.push("/pages/home");
+
+    if(user){
+      history.push("/pages/home");
+    }
+    else{
+      alert('Usuário ou senha inválidos')
+    }
   }
 
   return (
