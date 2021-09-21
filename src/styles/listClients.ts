@@ -91,7 +91,7 @@ export const Box = styled.div`
 
         h1 {
           font-size: 20px;
-          font-family: 'Lato';
+          font-family: 'Lato' ,sans-serif;
           font-weight: bold;
         }
 

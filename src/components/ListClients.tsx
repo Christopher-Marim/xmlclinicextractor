@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { useCurrent } from "../hooks/state";
 import api from "../services/api";
 import { Box,  Container,   } from "../styles/listClients";
 
-interface Cliente {
+export interface Cliente {
   id: string;
   nome: string;
   cnpj_cpf: string;
@@ -13,6 +14,8 @@ interface Cliente {
 export function ListClients() {
   const history = useHistory();
   const [clientes, setClientes] = useState<Cliente[]>([]);
+  const { setCompany } = useCurrent();
+
 
   useEffect(() => {
     async function getClients() {
@@ -23,7 +26,8 @@ export function ListClients() {
     getClients();
   }, []);
 
-  function handleClik() {
+  function handleClik(cliente:Cliente) {
+    setCompany(cliente);
     history.push("/pages/currentCompany");
   }
   return (
@@ -43,7 +47,7 @@ export function ListClients() {
 
                 <div className="container_infos">
                     <div className="postedBy">
-                        <button onClick={handleClik}>Enviar CSV</button>
+                        <button onClick={()=>handleClik(cliente)}>Enviar CSV</button>
                     </div>
 
                     <div className="container_tags">
