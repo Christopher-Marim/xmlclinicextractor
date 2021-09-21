@@ -1,33 +1,64 @@
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { Box, BoxImage, Container, NameCompany } from "../styles/listClients";
+import api from "../services/api";
+import { Box,  Container,   } from "../styles/listClients";
+
+interface Cliente {
+  id: string;
+  nome: string;
+  cnpj_cpf: string;
+  logocliente: string;
+}
 
 export function ListClients() {
+  const history = useHistory();
+  const [clientes, setClientes] = useState<Cliente[]>([]);
 
-    const history = useHistory();
-
-    function handleClik(){
-        history.push('/page/currentCompany');
+  useEffect(() => {
+    async function getClients() {
+      const response = await api.get("/cliente");
+      const clientes = response.data.data;
+      setClientes(clientes);
     }
+    getClients();
+  }, []);
+
+  function handleClik() {
+    history.push("/pages/currentCompany");
+  }
   return (
     <Container>
-      <Box onClick={handleClik}>
-        <BoxImage src="https://www.redflag.com.br/images/logo-wide@2x.png"></BoxImage>
-      </Box>
-      <Box onClick={handleClik}>
-        <BoxImage src="https://dms.licdn.com/video-thumbs/C4D05AQHulRXEtaBM9Q/79acac6d6a6a48afb9e8293fc4e137fe/feedshare-videocover_low-captions-thumbnails/480x270-00001.jpg"></BoxImage>
-      </Box>
-      <Box onClick={handleClik}>
-        <BoxImage src="https://www.redflag.com.br/images/logo-wide@2x.png"></BoxImage>
-      </Box>
-      <Box onClick={handleClik}>
-        <BoxImage src="https://www.redflag.com.br/images/logo-wide@2x.png"></BoxImage>
-      </Box>
-      <Box>
-        <BoxImage src="https://www.redflag.com.br/images/logo-wide@2x.png"></BoxImage>
-      </Box>
-      <Box>
-        <BoxImage src="https://www.redflag.com.br/images/logo-wide@2x.png"></BoxImage>
-      </Box>
+      {clientes.map((cliente) => (
+        <Box key={cliente.id} >
+           <div className="post">
+        <div className="header_post">
+            <img src={cliente.logocliente?cliente.logocliente:'https://www.redflag.com.br/images/about/01.jpg'} alt=""/>
+        </div>
+
+        <div className="body_post">
+            <div className="post_content">
+
+                <h1>{cliente.nome}</h1>
+                <p>{`CNPJ: ${cliente.cnpj_cpf}`}</p>
+
+                <div className="container_infos">
+                    <div className="postedBy">
+                        <button onClick={handleClik}>Enviar CSV</button>
+                    </div>
+
+                    <div className="container_tags">
+                        <div className="postedBy">
+                        <button>Visualizar XML</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </Box>
+      ))}
+
     </Container>
   );
 }

@@ -10,10 +10,11 @@ export function Home() {
   const history = useHistory();
 
   useEffect(() => {
-    if (!user) {
+    console.log(user)
+     if (!user) {      
       history.push("/");
     }
-  });
+  },[]);
 
   return (
     <Container>
