@@ -42,21 +42,15 @@ export function Login() {
     if (user) {
       history.push("/pages/home");
     }
-  }, []);
+  });
 
   async function HandleClickLogin() {
     const login = {
       login: loginText,
       senha: passwordText,
     };
-    await signIn(login);
-
-    if(user){
-      history.push("/pages/home");
-    }
-    else{
-      alert('Usuário ou senha inválidos')
-    }
+    await signIn(login); 
+  
   }
 
   return (
@@ -76,9 +70,10 @@ export function Login() {
               placeholder="Email"
             />
             <Input
+              
               onChange={ChangeTextPassoword}
               value={passwordText}
-              type="text"
+              type="password"
               placeholder="Senha"
             />
             <Button type="button" onClick={HandleClickLogin}>

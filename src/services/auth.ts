@@ -6,6 +6,7 @@ interface Response {
     nome: string,
     login: string,
     senha: string,
+    admin:boolean
   };
 }
 interface RequestSignIn {
@@ -16,16 +17,21 @@ interface RequestSignIn {
 export async function signIn({ login, senha }: RequestSignIn): Promise<Response> {
   console.log(login, senha)
 
-  const { data } = await api.get(`/Acessoappcoleta?method=loadAll&usuarioApp=${login}&senhaApp=${senha}`)
+  const { data, status } = await api.get(`/acesso?method=loginApp&pLogin=${login}&pSenha=${senha}`)
   const user = data.data[0]
-  console.log(user)
+  if(!user){
+    console.error('Status Response:' + status)
+    alert('Usuário ou senha inválidos')
+  }
+  console.log(data.data[0])
   return new Promise((resolve) => {
     resolve({
       token: `${user?.chave}`,
       user: {
-        nome: `${user?.nomeusuario}`,
+        nome: `${user?.nome}`,
         login: `${login}`,
         senha: `${senha}`,
+        admin: user?.admin == "1"?true:false
       }
 
     });

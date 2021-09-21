@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router";
 import * as auth from "../services/auth";
 
 interface User {
   nome: string;
   login: string;
   senha: string;
+  admin:boolean;
 }
 
 interface RequestSignIn {
@@ -25,12 +27,18 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   async function signIn({ login, senha }: RequestSignIn) {
     setLoading(true);
     const response = await auth.signIn({ login, senha });
-    setLoading(false);
+    
     setUser(response.user);
+    if(response){
+      history.push("/pages/home");
+    }
+    setLoading(false);
+
   }
   async function signOut() {
     setUser(null);
