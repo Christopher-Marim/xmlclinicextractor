@@ -1,6 +1,4 @@
-
-
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AiOutlineCheckCircle, AiFillDiff } from "react-icons/ai";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
@@ -10,16 +8,41 @@ import {
   FormInput,
   FormP,
   FormWrapper,
+  NameCompany,
+  Table,
+  Wrapper,
 } from "../styles/currentCompany";
 import { Header } from "./../components/Header";
 
+import DataTable from "react-data-table-component";
+import { FilterComponent } from "../components/FilterComponent";
+import { useCurrent } from "../hooks/state";
+import { Cliente } from "../components/ListClients";
+
+interface ResponseCSV {
+    cpf:string;
+    nome:string;
+    codPessoa:string;
+    chapa:string;
+}
+
 export function CurrentCompany() {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState<ResponseCSV[]>();
+  const [company, setCompany] = useState<Cliente|null>();
   const [fileName, setFileName] = useState("");
   const [classNameForm, setClassNameForm] = useState<string>("header");
   const [classNameP, setClassNameP] = useState<string>("header");
   const [columns, setColumns] = useState<any>([]);
   const [data, setData] = useState<any>([]);
+  const [filterText, setFilterText] = useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] =
+    useState(false);
+
+  const { currentCompany } = useCurrent();
+  
+  useEffect(() => {
+    setCompany(currentCompany);
+  },[])
 
   // handle file upload
   const handleFileUpload = (file: any) => {
@@ -34,8 +57,7 @@ export function CurrentCompany() {
       /* Convert array of arrays */
       const data = XLSX.utils.sheet_to_csv(ws);
       processData(data);
-      setFile(data);
-      console.log(data);
+      
     };
     reader.readAsBinaryString(file);
   };
@@ -44,17 +66,13 @@ export function CurrentCompany() {
     (files) => {
       console.log(files);
       setFileName(files[0].name);
-      setClassNameForm('complete')
-      setClassNameP('completeP')
+      setClassNameForm("complete");
+      setClassNameP("completeP");
       handleFileUpload(files[0]);
     },
     [handleFileUpload]
   );
-
-  const { getRootProps, getInputProps, isDragActive, isDragReject } =
-    useDropzone({
-      onDrop,
-    });
+  const { getRootProps, getInputProps } = useDropzone({onDrop});
 
   // process CSV data
   const processData = (dataString: string) => {
@@ -95,33 +113,69 @@ export function CurrentCompany() {
     }));
 
     setData(list);
+    setFile(list);
+    console.log(list)
     setColumns(columns);
+  };
+  const filteredItems = data.filter(
+    (item: ResponseCSV) =>
+      item.nome && item.nome.toLowerCase().includes(filterText.toLowerCase())
+  );
+  const handleClear = () => {
+    if (filterText) {
+      setResetPaginationToggle(!resetPaginationToggle);
+      setFilterText("");
+    }
   };
 
   return (
     <Container>
       <Header />
-      <FormWrapper className={classNameForm} {...getRootProps()} action="upload.php" method="POST">
-        <FormInput {...getInputProps()} type="file" />
-        {!file ? (
-          <div className="wrapper">
-          <AiFillDiff color={'#7d7d7d'} size={70}/>
-          <FormP>Arraste o arquivo CSV para essa área ou click nela.</FormP>
-          </div>
-        ) : (
-          <div className="wrapper">
-          <AiOutlineCheckCircle color="#117A60" size={70}/>
-          <FormP className={classNameP}>{`Arquivo ${fileName} carregado com sucesso!!`}</FormP>
-          </div>
+      <Wrapper>
+      <NameCompany>{company?.nome}</NameCompany>
+        <FormWrapper
+          className={classNameForm}
+          {...getRootProps()}
+          action="upload.php"
+          method="POST"
+        >
+          <FormInput {...getInputProps()} type="file" />
+          {!file ? (
+            <div className="wrapper">
+              <AiFillDiff color={"#7d7d7d"} size={70} />
+              <FormP>Arraste o arquivo CSV para essa área ou click nela.</FormP>
+            </div>
+          ) : (
+            <div className="wrapper">
+              <AiOutlineCheckCircle color="#117A60" size={70} />
+              <FormP
+                className={classNameP}
+              >{`Arquivo ${fileName} carregado com sucesso!!`}</FormP>
+            </div>
+          )}
+        </FormWrapper>
+        {data.length > 0 && (
+          <>
+            <FilterComponent
+              onFilter={(e: any) => setFilterText(e.target.value)}
+              onClear={handleClear}
+              filterText={filterText}
+            />
+            <Table>
+              <p className="titulo">Tabela de {fileName}</p>
+              <DataTable
+                highlightOnHover
+                columns={columns}
+                data={filteredItems}
+                paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                subHeader
+                persistTableHead
+              />
+            </Table>
+            <FormButton type="submit">Upload</FormButton>
+          </>
         )}
-        <FormButton type="submit">Upload</FormButton>
-      </FormWrapper>
-      {/*  <DataTable
-          pagination
-          highlightOnHover
-          columns={columns}
-          data={data}
-        /> */}
+      </Wrapper>
     </Container>
   );
 }

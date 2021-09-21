@@ -3,10 +3,9 @@ import px2vw from "../utils/px2vw";
 
 export const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background: #e3e3e3;
 
   .wrapper{
@@ -14,12 +13,44 @@ export const Container = styled.div`
       flex-direction: column;
       align-items: center;
   }
-  
+`;
+export const NameCompany = styled.h1`
+  font-size:20px;
+  font-weight: bold;
+  font-family: 'Lato', Times, serif;
+  margin: 20px;
+`;
+export const Table = styled.table`
+  display: block;
+  background-color: white;
+  overflow:auto;
+  margin-top:20px;
+  width:100%;
+  min-height: 500px;
+  max-height: 500px;
+  border: 2px solid gray;
+
+  .titulo{
+    margin-top:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
+export const Wrapper = styled.div`
+  display: flex;
+  margin-top: 140px;
+  justify-content: space-between;
+  background-color: transparent;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+  height: 100%;
+`;
 
 export const FormP = styled.p`
-  
     width: 100%;
     margin-top: -50px;
     height: 100%;
@@ -46,14 +77,15 @@ export const FormInput = styled.input`
   
 `;
 export const FormButton = styled.button`
-    margin: 0;
     color: #fff;
     background: #9c0000;
     border: none;
-    width: 508px;
+    width:100%;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
     height: 35px;
-    margin-top: -20px;
-    margin-left: -4px;
     border-radius: 4px;
     border-bottom: 4px solid #9c0000;
     transition: all .2s ease;
@@ -70,7 +102,6 @@ export const FormButton = styled.button`
 
 export const FormWrapper = styled.form`
   background-color: #fff;
-    margin-top: 140px;
     width: 500px;
     height: 200px;
     border: 4px dashed gray;
