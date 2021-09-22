@@ -13,6 +13,18 @@ export const Container = styled.div`
       flex-direction: column;
       align-items: center;
   }
+
+  .icon{
+    margin-left: 20px;
+
+    &:hover{
+      background-color: #ddd;
+      border-width: 2px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; 
+      border-radius: 100px;
+      transition: ease-in-out 400ms;
+    }
+  }
 `;
 export const NameCompany = styled.h1`
   font-size:20px;

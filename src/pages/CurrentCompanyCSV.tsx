@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { AiOutlineCheckCircle, AiFillDiff } from "react-icons/ai";
+import {
+  AiOutlineCheckCircle,
+  AiFillDiff,
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
+import { IoReturnUpBackOutline } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
 import {
@@ -11,8 +16,8 @@ import {
   NameCompany,
   Table,
   Wrapper,
-} from "../styles/currentCompany";
-import { Header } from "./../components/Header";
+} from "../styles/currentCompanyCSV";
+import { Header } from "../components/Header";
 
 import DataTable from "react-data-table-component";
 import { FilterComponent } from "../components/FilterComponent";
@@ -21,6 +26,7 @@ import { Cliente } from "../components/ListClients";
 import { exit } from "process";
 import api from "../services/api";
 import { Loader } from "../components/Loader";
+import { useHistory } from "react-router";
 
 interface ResponseCSV {
   cpf: string;
@@ -29,7 +35,7 @@ interface ResponseCSV {
   chapa: string;
 }
 
-export function CurrentCompany() {
+export function CurrentCompanyCSV() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<Cliente | null>();
@@ -42,6 +48,8 @@ export function CurrentCompany() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const { currentCompany } = useCurrent();
+
+  const history = useHistory();
 
   useEffect(() => {
     setCompany(currentCompany);
@@ -184,7 +192,16 @@ export function CurrentCompany() {
         <Loader />
       ) : (
         <Container>
-          <Header />
+          <Header>
+            <IoReturnUpBackOutline
+              className={"icon"}
+              size={50}
+              color={"#000"}
+              onClick={() => {
+                history.goBack();
+              }}
+            ></IoReturnUpBackOutline>
+          </Header>
           <Wrapper>
             <NameCompany>{company?.nome}</NameCompany>
             <FormWrapper

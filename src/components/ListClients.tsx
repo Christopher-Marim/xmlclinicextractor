@@ -26,10 +26,16 @@ export function ListClients() {
     getClients();
   }, []);
 
-  function handleClik(cliente:Cliente) {
+  function handleClikNavigateToCSVPage(cliente:Cliente) {
     setCompany(cliente);
-    history.push("/pages/currentCompany");
+    history.push("/pages/currentCompanyCSV");
   }
+
+  function handleClikNavigateToXMLPage(cliente:Cliente) {
+    setCompany(cliente);
+    history.push("/pages/currentCompanyXML");
+  }
+
   return (
     <Container>
       {clientes.map((cliente) => (
@@ -47,12 +53,12 @@ export function ListClients() {
 
                 <div className="container_infos">
                     <div className="postedBy">
-                        <button onClick={()=>handleClik(cliente)}>Enviar CSV</button>
+                        <button onClick={()=>handleClikNavigateToCSVPage(cliente)}>Enviar CSV</button>
                     </div>
 
                     <div className="container_tags">
                         <div className="postedBy">
-                        <button>Visualizar XML</button>
+                        <button onClick={()=>handleClikNavigateToXMLPage(cliente)} >Visualizar XML</button>
                         </div>
 
                     </div>

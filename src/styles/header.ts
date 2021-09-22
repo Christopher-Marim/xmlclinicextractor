@@ -3,7 +3,7 @@ import px2vw from "../utils/px2vw";
 
 export const HeaderContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     position: fixed;
     width: 100%;
     height: 100px;

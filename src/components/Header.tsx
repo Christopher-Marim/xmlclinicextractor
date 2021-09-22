@@ -5,10 +5,14 @@ import {
   Logo,
 } from "../styles/header";
 
-export function Header() {
+interface Props {
+  children?:JSX.Element
+}
+
+export function Header({children}:Props) {
   window.onscroll = () => navbarScroll();
 
-  const [classNameText, setClassNameText] = useState<string>("header");
+  const [classNameText, setClassNameText] = useState<string>("small");
 
   function navbarScroll() {
     var y = window.scrollY;
@@ -21,12 +25,14 @@ export function Header() {
 
   return (
     <HeaderContainer className={classNameText}>
+      {classNameText=='small'?children?children:<div></div>:<div></div>}
       <HeaderName>
         <Logo
           className="headerLogo"
           src={`https://www.redflag.com.br/images/logo-wide@2x.png`}
         ></Logo>
       </HeaderName>
+      <div/>
     </HeaderContainer>
   );
 }
