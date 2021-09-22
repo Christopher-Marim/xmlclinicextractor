@@ -18,31 +18,34 @@ import DataTable from "react-data-table-component";
 import { FilterComponent } from "../components/FilterComponent";
 import { useCurrent } from "../hooks/state";
 import { Cliente } from "../components/ListClients";
+import { exit } from "process";
+import api from "../services/api";
+import { Loader } from "../components/Loader";
 
 interface ResponseCSV {
-    cpf:string;
-    nome:string;
-    codPessoa:string;
-    chapa:string;
+  cpf: string;
+  nome: string;
+  codPessoa: string;
+  chapa: string;
 }
 
 export function CurrentCompany() {
-  const [file, setFile] = useState<ResponseCSV[]>();
-  const [company, setCompany] = useState<Cliente|null>();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [company, setCompany] = useState<Cliente | null>();
   const [fileName, setFileName] = useState("");
   const [classNameForm, setClassNameForm] = useState<string>("header");
   const [classNameP, setClassNameP] = useState<string>("header");
   const [columns, setColumns] = useState<any>([]);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<ResponseCSV[]>([]);
   const [filterText, setFilterText] = useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] =
-    useState(false);
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const { currentCompany } = useCurrent();
-  
+
   useEffect(() => {
     setCompany(currentCompany);
-  },[])
+  }, []);
 
   // handle file upload
   const handleFileUpload = (file: any) => {
@@ -57,7 +60,6 @@ export function CurrentCompany() {
       /* Convert array of arrays */
       const data = XLSX.utils.sheet_to_csv(ws);
       processData(data);
-      
     };
     reader.readAsBinaryString(file);
   };
@@ -65,6 +67,7 @@ export function CurrentCompany() {
   const onDrop = useCallback(
     (files) => {
       console.log(files);
+      setError(false);
       setFileName(files[0].name);
       setClassNameForm("complete");
       setClassNameP("completeP");
@@ -72,7 +75,7 @@ export function CurrentCompany() {
     },
     [handleFileUpload]
   );
-  const { getRootProps, getInputProps } = useDropzone({onDrop});
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   // process CSV data
   const processData = (dataString: string) => {
@@ -113,8 +116,17 @@ export function CurrentCompany() {
     }));
 
     setData(list);
-    setFile(list);
-    console.log(list)
+    list.map((item: ResponseCSV) => {
+      if (
+        item.nome.trim().length == 0 ||
+        item.chapa.trim().length == 0 ||
+        item.codPessoa.trim().length == 0 ||
+        item.cpf.trim().length == 0
+      ) {
+        setError(true);
+        return;
+      }
+    });
     setColumns(columns);
   };
   const filteredItems = data.filter(
@@ -128,54 +140,114 @@ export function CurrentCompany() {
     }
   };
 
+  async function HandleClickUpload() {
+    if (error) {
+      alert("Upload negado! Existem valores nulos na tabela, favor verificar.");
+    } else {
+      setLoading(true);
+      for (const pessoa of data) {
+        try {
+          const response = await api.post(
+            `/funcionario?cpf=${pessoa.cpf}&nome=${pessoa.nome}&codpessoa=${pessoa.codPessoa}&chapa=${pessoa.chapa}&cliente_id=${company?.id}`
+          );
+          console.log(response.data);
+        } catch (error) {
+          alert("Erro ao fazer Upload");
+          setLoading(false);
+          throw "exit";
+        }
+      }
+      setLoading(false);
+    }
+  }
+
+  const conditionalRowStyles = [
+    {
+      when: (row: ResponseCSV) =>
+        row.nome.length == 0 ||
+        row.cpf.length == 0 ||
+        row.codPessoa.length == 0 ||
+        row.chapa.length == 0,
+      style: {
+        backgroundColor: "rgba(242, 38, 19, 0.9)",
+        color: "white",
+        "&:hover": {
+          cursor: "not-allowed",
+        },
+      },
+    },
+  ];
+
   return (
-    <Container>
-      <Header />
-      <Wrapper>
-      <NameCompany>{company?.nome}</NameCompany>
-        <FormWrapper
-          className={classNameForm}
-          {...getRootProps()}
-          action="upload.php"
-          method="POST"
-        >
-          <FormInput {...getInputProps()} type="file" />
-          {!file ? (
-            <div className="wrapper">
-              <AiFillDiff color={"#7d7d7d"} size={70} />
-              <FormP>Arraste o arquivo CSV para essa área ou click nela.</FormP>
-            </div>
-          ) : (
-            <div className="wrapper">
-              <AiOutlineCheckCircle color="#117A60" size={70} />
-              <FormP
-                className={classNameP}
-              >{`Arquivo ${fileName} carregado com sucesso!!`}</FormP>
-            </div>
-          )}
-        </FormWrapper>
-        {data.length > 0 && (
-          <>
-            <FilterComponent
-              onFilter={(e: any) => setFilterText(e.target.value)}
-              onClear={handleClear}
-              filterText={filterText}
-            />
-            <Table>
-              <p className="titulo">Tabela de {fileName}</p>
-              <DataTable
-                highlightOnHover
-                columns={columns}
-                data={filteredItems}
-                paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-                subHeader
-                persistTableHead
-              />
-            </Table>
-            <FormButton type="submit">Upload</FormButton>
-          </>
-        )}
-      </Wrapper>
-    </Container>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Container>
+          <Header />
+          <Wrapper>
+            <NameCompany>{company?.nome}</NameCompany>
+            <FormWrapper
+              className={classNameForm}
+              {...getRootProps()}
+              action="upload.php"
+              method="POST"
+            >
+              <FormInput {...getInputProps()} type="file" />
+              {data.length == 0 ? (
+                <div className="wrapper">
+                  <AiFillDiff color={"#7d7d7d"} size={70} />
+                  <FormP>
+                    Arraste o arquivo CSV para essa área ou click nela.
+                  </FormP>
+                </div>
+              ) : (
+                <div className="wrapper">
+                  <AiOutlineCheckCircle color="#117A60" size={70} />
+                  <FormP
+                    className={classNameP}
+                  >{`Arquivo ${fileName} carregado com sucesso!!`}</FormP>
+                </div>
+              )}
+            </FormWrapper>
+            {data.length > 0 && (
+              <>
+                <FilterComponent
+                  onFilter={(e: any) => setFilterText(e.target.value)}
+                  onClear={handleClear}
+                  filterText={filterText}
+                />
+                <span>
+                  {error
+                    ? "Existem valores nulo na tabela, favor verificar!"
+                    : ""}
+                </span>
+                <Table>
+                  <p className="titulo">Tabela de {fileName}</p>
+                  <DataTable
+                    highlightOnHover
+                    columns={columns}
+                    data={filteredItems}
+                    paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                    subHeader
+                    conditionalRowStyles={conditionalRowStyles}
+                    persistTableHead
+                  />
+                </Table>
+                <FormButton
+                  style={{
+                    background: error ? "#9c0000" : "#117A60",
+                  }}
+                  onClick={HandleClickUpload}
+                  type="submit"
+                >
+                  {error ? "CSV inválido" : "Fazer upload"}
+                </FormButton>
+              </>
+            )}
+          </Wrapper>
+        </Container>
+      )}
+    </>
   );
 }

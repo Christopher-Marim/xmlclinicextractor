@@ -48,6 +48,11 @@ export const Wrapper = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   height: 100%;
+
+  span{
+    color:red;
+    margin-top: 20px;
+  }
 `;
 
 export const FormP = styled.p`
@@ -78,7 +83,6 @@ export const FormInput = styled.input`
 `;
 export const FormButton = styled.button`
     color: #fff;
-    background: #9c0000;
     border: none;
     width:100%;
     display: block;
@@ -87,7 +91,6 @@ export const FormButton = styled.button`
     padding: 10px;
     height: 35px;
     border-radius: 4px;
-    border-bottom: 4px solid #9c0000;
     transition: all .2s ease;
     outline: none;
 
