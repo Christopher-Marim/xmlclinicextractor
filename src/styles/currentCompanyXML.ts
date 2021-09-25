@@ -25,10 +25,10 @@ export const Container = styled.div`
       transition: ease-in-out 400ms;
     }
   }
-`;
-export const NameCompany = styled.h1`
-  font-size:20px;
-  font-weight: bold;
-  font-family: 'Lato', Times, serif;
-  margin: 20px;
+
+  h1 {
+    font-size: 25px;
+    color:#9C1111;
+    margin-top: 10px;
+  }
 `;

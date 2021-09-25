@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import px2vw from "../utils/px2vw";
+import px2vw from "../../utils/px2vw";
 
 export const Container = styled.div`
   display: flex;
   margin-top: 140px;
   justify-content: space-between;
   flex-direction: column;
+  border-radius: 5px;
   padding: ${px2vw(10)};;
   border: 2px solid gray;
   width: ${px2vw(350)};
