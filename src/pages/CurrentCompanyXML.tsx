@@ -1,6 +1,7 @@
 import { IoReturnUpBackOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
 import { Header } from "../components/Header";
+import { SelectDate } from "../components/SelectDate";
 import { Container } from "../styles/currentCompanyXML";
 
 
@@ -20,6 +21,7 @@ export function CurrentCompanyXML(){
               }}
             ></IoReturnUpBackOutline>
             </Header>
+            <SelectDate></SelectDate>           
         </Container>
     );
 }
