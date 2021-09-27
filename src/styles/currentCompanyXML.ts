@@ -8,12 +8,6 @@ export const Container = styled.div`
   min-height: 100vh;
   background: #e3e3e3;
 
-  .wrapper{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-
   .icon{
     margin-left: 20px;
 
