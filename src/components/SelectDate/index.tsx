@@ -21,7 +21,6 @@ export function SelectDate({callback}:Props) {
 
   return (
     <Container>
-      <h1>Buscar por Xmls</h1>  
       <Form>
         <div className="groupInput">
           <div className="containerInput">           

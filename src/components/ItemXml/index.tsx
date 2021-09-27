@@ -1,5 +1,6 @@
 import { Container, Form, Info, NameCompany, Version, Wrapper } from "./styles";
 import { BsDownload } from "react-icons/bs";
+import { FiAlertTriangle } from "react-icons/fi";
 import px2vw from "../../utils/px2vw";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,7 +12,7 @@ export interface ItemXmlType {
   dateBegin: string;
   dateFinish: string;
   version: string;
-  xml: string;
+  xml: string | null;
 }
 
 export function ItemXml({
@@ -31,8 +32,10 @@ export function ItemXml({
   }, [file]);
 
   function downloadFile() {
-    const fileDownloadUrl = URL.createObjectURL(new Blob([xml]));
-    setFile(fileDownloadUrl);
+    if(xml!=null){
+      const fileDownloadUrl = URL.createObjectURL(new Blob([xml]));
+      setFile(fileDownloadUrl);
+    }
   }
 
   return (
@@ -51,10 +54,19 @@ export function ItemXml({
           </Info>
         </Form>
         <div>
-          <button onClick={downloadFile}>
-            <BsDownload size={px2vw(25)} />
-          </button>
-          <a download={"ExportXML.xml"} href={file} ref={refA}></a>
+          {xml?(
+            <>
+            <button onClick={downloadFile}>
+              <BsDownload size={px2vw(25)} />
+            </button>
+            <a download={"ExportXML.xml"} href={file} ref={refA}></a>
+            </>
+          ):(
+            <>
+            <FiAlertTriangle className='iconAlert' size={px2vw(25)}  color={'#888'}/>
+            <p className='hide'>Esperando retorno XML!</p>
+            </>
+          )}
           <Version>v{version}</Version>
         </div>
       </Wrapper>

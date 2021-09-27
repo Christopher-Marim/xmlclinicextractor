@@ -33,8 +33,40 @@ export const Wrapper = styled.div`
      color:#9C1111 
     }
 
+    .hide {
+    display: none;
+    font-size: 14px;
+
+  &:hover {
+        display: block;
+        position: absolute;
+        background-color: white;
+        padding: 5px;
+        border: 1px solid gray;
+        border-radius: 10px;
+        color:gray;
+        transition: ease-in 1000ms;
+      
+      } 
+}
+
+    .iconAlert{
+      height: auto;
+      margin: ${px2vw(10)};
+      &:hover  + .hide{
+        display: block;
+        position: absolute;
+        background-color: white;
+        padding: 5px;
+        border: 1px solid gray;
+        border-radius: 10px;
+        color:gray;
+        transition: ease-in 1000ms;
+      
+      } 
+    }
+
     button {
-        padding: ${px2vw(7)};
         border-radius: ${px2vw(50)};
         background-color: transparent;
         border-width: 0px;
@@ -65,23 +97,23 @@ export const NameCompany = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
  `;
- export const Form = styled.form`
+export const Form = styled.form`
  display:flex;
  flex-direction: column;
   align-items: stretch;
    
  `;
-    
+
 export const Info = styled.p`
   font-size: ${px2vw(15)};
   padding: ${px2vw(2)};
   
   
 `;
-    
+
 export const Version = styled.p`
 
  color:gray;
  font-size: ${px2vw(12)};
 `;
-    
+

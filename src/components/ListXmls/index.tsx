@@ -12,7 +12,7 @@ export function ListXmls({ array }: Props) {
   return (
     <Container>
       {array.map((item) => (
-        <ItemXml {...item}></ItemXml>
+        <ItemXml key={item.id} {...item}></ItemXml>
       ))}
     </Container>
   );
