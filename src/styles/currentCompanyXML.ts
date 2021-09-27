@@ -26,3 +26,10 @@ export const Container = styled.div`
     margin-top: 10px;
   }
 `;
+
+export const NameCompany = styled.h2`
+  margin-top: 140px;
+  font-size: 20px;
+  font-size: 25px;
+  color:#9C1111;
+  `

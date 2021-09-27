@@ -27,6 +27,7 @@ import { exit } from "process";
 import api from "../services/api";
 import { Loader } from "../components/Loader";
 import { useHistory } from "react-router";
+import { useAuth } from "../hooks/auth";
 
 interface ResponseCSV {
   cpf: string;
@@ -49,11 +50,19 @@ export function CurrentCompanyCSV() {
 
   const { currentCompany } = useCurrent();
 
+  const { user } = useAuth();
   const history = useHistory();
 
   useEffect(() => {
     setCompany(currentCompany);
   }, []);
+
+
+  useEffect(() => {
+     if (!user) {      
+      history.push("/");
+    }
+  },[]);
 
   // handle file upload
   const handleFileUpload = (file: any) => {

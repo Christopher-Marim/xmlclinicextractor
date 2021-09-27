@@ -1,7 +1,7 @@
 import { Container, Form, Info, NameCompany, Version, Wrapper } from "./styles";
 import { BsDownload } from "react-icons/bs";
 import px2vw from "../../utils/px2vw";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface ItemXmlType {
   id: string;

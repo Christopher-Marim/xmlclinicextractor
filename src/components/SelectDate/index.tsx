@@ -3,12 +3,21 @@ import { Button, Container, Form, Text,  } from "./styles";
 import { DatePicker } from "react-rainbow-components";
 
 interface Props {
-  callback():void;
+  callback(startDate:Date, finishDate:Date):void;
 }
 
 export function SelectDate({callback}:Props) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
+
+  function CallbackResponse(){
+    if(startDate&&finishDate){
+      callback(startDate, finishDate)
+    }
+    else{
+      alert('Preencha todos os campos de data')
+    }
+  }
 
   return (
     <Container>
@@ -37,7 +46,7 @@ export function SelectDate({callback}:Props) {
           </div>
         </div>
       </Form>
-      <Button onClick={callback}>Importar XML</Button>
+      <Button onClick={CallbackResponse}>Importar XML</Button>
     </Container>
   );
 }

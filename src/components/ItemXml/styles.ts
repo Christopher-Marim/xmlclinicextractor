@@ -60,6 +60,9 @@ export const NameCompany = styled.p`
     padding: ${px2vw(15)};
     border-right: ${px2vw(1)} solid gray;
     margin-right: ${px2vw(-60)};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
  `;
  export const Form = styled.form`
  display:flex;

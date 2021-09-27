@@ -29,11 +29,24 @@ const AuthProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+
+  useEffect(() => {
+    
+    var userAux =  localStorage.getItem('User');
+    if(userAux){
+      setUser(JSON.parse(userAux))
+    }
+  
+  },[])
+
   async function signIn({ login, senha }: RequestSignIn) {
     setLoading(true);
     const response = await auth.signIn({ login, senha });
     
     setUser(response.user);
+    localStorage.clear();
+    localStorage.setItem("User",JSON.stringify(response.user));
+
     if(response){
       history.push("/pages/home");
     }
@@ -42,6 +55,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }
   async function signOut() {
     setUser(null);
+    localStorage.clear();
   }
   return (
     <AuthContext.Provider

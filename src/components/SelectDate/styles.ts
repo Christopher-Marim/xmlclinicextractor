@@ -3,7 +3,7 @@ import px2vw from "../../utils/px2vw";
 
 export const Container = styled.div`
   display: flex;
-  margin-top: 140px;
+  margin-top:20px;
   justify-content: space-between;
   flex-direction: column;
   border-radius: 5px;
