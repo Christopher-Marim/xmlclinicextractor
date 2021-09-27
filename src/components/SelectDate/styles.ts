@@ -48,6 +48,7 @@ export const Button = styled.button`
     border-width: 0px;
     background-color: #9C1111;
     color: #fff;
+    cursor: pointer;
 
     &:hover{
         filter:grayscale(0.2)

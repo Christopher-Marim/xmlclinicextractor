@@ -31,7 +31,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
 
   useEffect(() => {
-    
     var userAux =  localStorage.getItem('User');
     if(userAux){
       setUser(JSON.parse(userAux))

@@ -38,6 +38,7 @@ export const Wrapper = styled.div`
         border-radius: ${px2vw(50)};
         background-color: transparent;
         border-width: 0px;
+        cursor: pointer;
         
         &:hover{
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

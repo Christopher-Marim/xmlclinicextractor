@@ -12,6 +12,15 @@ export const HeaderContainer = styled.div`
     text-align: center;
     background: white;
     transition: .3s;
+
+    .icon{
+       margin-right: 20px;
+    &:hover{
+      padding: 5px;
+      border-width: 2px;
+      transition: ease-in-out 400ms;
+    }
+  }
     
     &.small {
       height: 100px;
@@ -30,6 +39,10 @@ export const HeaderContainer = styled.div`
         height: 0px;
         text-shadow: none;
         
+      }
+
+      .icon{
+        height: 0px;
       }
       }
  

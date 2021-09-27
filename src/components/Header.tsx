@@ -5,12 +5,18 @@ import {
   Logo,
 } from "../styles/header";
 
+import { ImExit } from "react-icons/im";
+import { useHistory } from "react-router";
+import { useAuth } from "../hooks/auth";
+
 interface Props {
   children?:JSX.Element
 }
 
 export function Header({children}:Props) {
   window.onscroll = () => navbarScroll();
+   const history = useHistory();
+   const {signOut} = useAuth();
 
   const [classNameText, setClassNameText] = useState<string>("small");
 
@@ -32,7 +38,12 @@ export function Header({children}:Props) {
           src={`https://www.redflag.com.br/images/logo-wide@2x.png`}
         ></Logo>
       </HeaderName>
-      <div/>
+      <ImExit size={35} style={{marginRight:30}} 
+              className={"icon"}
+              onClick={ () => {
+                signOut();
+                history.push('/');
+              }}/>
     </HeaderContainer>
   );
 }
