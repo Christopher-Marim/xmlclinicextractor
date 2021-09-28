@@ -57,14 +57,14 @@ export function ItemXml({
           {xml?(
             <>
             <button onClick={downloadFile}>
-              <BsDownload size={px2vw(25)} />
+              <BsDownload size={25} />
             </button>
             <a download={"ExportXML.xml"} href={file} ref={refA}></a>
             </>
           ):(
             <>
-            <FiAlertTriangle className='iconAlert' size={px2vw(25)}  color={'#888'}/>
-            <p className='hide'>Esperando retorno XML!</p>
+            <FiAlertTriangle className='iconAlert' size={25}  color={'#888'}/>
+            <p className='hide'>Esperando retorno do XML!</p>
             </>
           )}
           <Version>v{version}</Version>

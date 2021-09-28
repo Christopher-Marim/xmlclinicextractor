@@ -9,7 +9,7 @@ export const Container = styled.div`
   border-radius: 5px;
   padding: ${px2vw(10)};;
   border: 2px solid gray;
-  width: ${px2vw(350)};
+  width: 400px;
   align-items: center;
   background: white;
   
@@ -40,8 +40,8 @@ export const Text = styled.p`
 
 
 export const Button = styled.button`
-    font-size: ${px2vw(12)};
-    width: ${px2vw(250)};
+    font-size: 15px;
+    width: 250px;
     margin: ${px2vw(20)};
     padding: ${px2vw(8)};
     border-radius: ${px2vw(50)};

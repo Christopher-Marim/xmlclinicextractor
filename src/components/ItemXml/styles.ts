@@ -3,13 +3,14 @@ import px2vw from "../../utils/px2vw";
 
 export const Container = styled.div`
   display: flex;
-  margin-top: 10px;
+  margin: 10px 0px;
   justify-content: space-between;
   flex-direction: column;
-  padding: ${px2vw(10)};;
+  padding: 10px;
   border: 2px solid gray;
   border-radius:5px;
-  width: ${px2vw(500)};
+  width:${px2vw(500)};
+  min-width: 450px;
   align-items: center;
   background: white;
  
@@ -27,7 +28,7 @@ export const Wrapper = styled.div`
    justify-content: space-between;
    align-items: center;
    flex-direction: row;
-   margin: ${px2vw(10)};
+   margin: 10px;
 
    .colorRed{
      color:#9C1111 
@@ -52,7 +53,6 @@ export const Wrapper = styled.div`
 
     .iconAlert{
       height: auto;
-      margin: ${px2vw(10)};
       &:hover  + .hide{
         display: block;
         position: absolute;
@@ -67,7 +67,7 @@ export const Wrapper = styled.div`
     }
 
     button {
-        border-radius: ${px2vw(50)};
+        border-radius:50px;
         background-color: transparent;
         border-width: 0px;
         cursor: pointer;
@@ -88,14 +88,25 @@ export const Wrapper = styled.div`
   
 `;
 export const NameCompany = styled.p`
-    font-size: ${px2vw(24)};
+    font-size: 25px;
+    min-width:100px;
+    width: ${px2vw(200)};
     max-width: 200px;
-    padding: ${px2vw(15)};
+    padding: 13px;
     border-right: ${px2vw(1)} solid gray;
-    margin-right: ${px2vw(-60)};
+    margin-right: -20px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @media (max-width: 1024px) {
+    font-size: 18px;
+    margin-right: -40px;
+    }
+    @media (min-width: 1600px) {
+      font-size: 25px;
+    margin-right: -100px;
+  }
  `;
 export const Form = styled.form`
  display:flex;
@@ -105,8 +116,8 @@ export const Form = styled.form`
  `;
 
 export const Info = styled.p`
-  font-size: ${px2vw(15)};
-  padding: ${px2vw(2)};
+  font-size: 15px;
+  padding: 2px;
   
   
 `;
@@ -114,6 +125,6 @@ export const Info = styled.p`
 export const Version = styled.p`
 
  color:gray;
- font-size: ${px2vw(12)};
+ font-size: 14px;
 `;
 

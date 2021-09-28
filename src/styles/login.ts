@@ -88,10 +88,6 @@ export const Input = styled.input`
       width: 100%;
       max-width:320px;
       border: 2px solid #a8a8b3;
- 
-  @media (min-width: 1024px) {
-    
-  }
 `;
 export const Titulo = styled.p`
       font-family: "MuseoModerno", sans-serif;

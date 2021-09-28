@@ -6,6 +6,6 @@ export const Container = styled.div`
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  background: #e3e3e3;
+  background-color: #e3e3e3;
   
 `;
