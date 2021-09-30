@@ -10,7 +10,6 @@ export function Home() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log(user)
      if (!user) {      
       history.push("/");
     }

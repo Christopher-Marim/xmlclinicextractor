@@ -59,8 +59,11 @@ export function CurrentCompanyCSV() {
 
 
   useEffect(() => {
-     if (!user) {      
+    if (!user) {      
       history.push("/");
+    }
+    if (!currentCompany) {      
+      history.push("/pages/home");
     }
   },[]);
 
@@ -83,7 +86,6 @@ export function CurrentCompanyCSV() {
 
   const onDrop = useCallback(
     (files) => {
-      console.log(files);
       setError(false);
       setFileName(files[0].name);
       setClassNameForm("complete");
@@ -167,7 +169,6 @@ export function CurrentCompanyCSV() {
           const response = await api.post(
             `/funcionario?cpf=${pessoa.cpf}&nome=${pessoa.nome}&codpessoa=${pessoa.codPessoa}&chapa=${pessoa.chapa}&cliente_id=${company?.id}`
           );
-          console.log(response.data);
         } catch (error) {
           alert("Erro ao fazer Upload");
           setLoading(false);

@@ -108,6 +108,7 @@ export const Button = styled.button`
       color: #fff;
       background-color: #9c0000;
       border: 1px solid #9c0000;
+      cursor:pointer;
 
       &:hover {
         filter:brightness(0.8);

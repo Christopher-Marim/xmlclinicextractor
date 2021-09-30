@@ -41,14 +41,14 @@ const AuthProvider: React.FC = ({ children }) => {
   async function signIn({ login, senha }: RequestSignIn) {
     setLoading(true);
     const response = await auth.signIn({ login, senha });
-    
-    setUser(response.user);
-    localStorage.clear();
-    localStorage.setItem("User",JSON.stringify(response.user));
-
     if(response){
+      setUser(response.user);
+      localStorage.clear();
+      localStorage.setItem("User",JSON.stringify(response.user));
+
       history.push("/pages/home");
     }
+    
     setLoading(false);
 
   }
