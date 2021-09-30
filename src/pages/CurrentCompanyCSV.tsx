@@ -32,7 +32,7 @@ import { useAuth } from "../hooks/auth";
 interface ResponseCSV {
   cpf: string;
   nome: string;
-  codPessoa: string;
+  codpessoa: string;
   chapa: string;
 }
 
@@ -57,15 +57,14 @@ export function CurrentCompanyCSV() {
     setCompany(currentCompany);
   }, []);
 
-
   useEffect(() => {
-    if (!user) {      
+    if (!user) {
       history.push("/");
     }
-    if (!currentCompany) {      
+    if (!currentCompany) {
       history.push("/pages/home");
     }
-  },[]);
+  }, []);
 
   // handle file upload
   const handleFileUpload = (file: any) => {
@@ -96,12 +95,12 @@ export function CurrentCompanyCSV() {
   );
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  // process CSV data
+  // processando CSV data
   const processData = (dataString: string) => {
     const dataStringLines = dataString.split(/\r\n|\n/);
-    const headers = dataStringLines[0].split(
-      /,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/
-    );
+    const headers = dataStringLines[0]
+      .toLocaleLowerCase()
+      .split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
 
     const list = [];
     for (let i = 1; i < dataStringLines.length; i++) {
@@ -121,7 +120,7 @@ export function CurrentCompanyCSV() {
           }
         }
 
-        // remove the blank rows
+        // remover linhas em branco
         if (Object.values(obj).filter((x) => x).length > 0) {
           list.push(obj);
         }
@@ -129,18 +128,29 @@ export function CurrentCompanyCSV() {
     }
 
     // prepare columns list from headers
-    const columns = headers.map((c) => ({
-      name: c,
-      selector: c,
-    }));
+    const columns = headers.map((c) => {
+      if (c.trim().length == 0) {
+        setError(true);
+        alert(
+          "Verifique se o nome das colunas foram preenchidos corretamente, precisa ter: nome, chapa, codpessoa, cpf"
+        );
+      } 
+      const obj = {
+        name: c,
+        selector: c,
+      };
+      return obj;
+    });
+
+    console.log(columns);
 
     setData(list);
     list.map((item: ResponseCSV) => {
       if (
-        item.nome.trim().length == 0 ||
-        item.chapa.trim().length == 0 ||
-        item.codPessoa.trim().length == 0 ||
-        item.cpf.trim().length == 0
+        item.nome?.trim().length == 0 ||
+        item.chapa?.trim().length == 0 ||
+        item.codpessoa?.trim().length == 0 ||
+        item.cpf?.trim().length == 0
       ) {
         setError(true);
         return;
@@ -167,14 +177,17 @@ export function CurrentCompanyCSV() {
       for (const pessoa of data) {
         try {
           const response = await api.post(
-            `/funcionario?cpf=${pessoa.cpf}&nome=${pessoa.nome}&codpessoa=${pessoa.codPessoa}&chapa=${pessoa.chapa}&cliente_id=${company?.id}`
+            `/funcionario?cpf=${pessoa.cpf}&nome=${pessoa.nome}&codpessoa=${pessoa.codpessoa}&chapa=${pessoa.chapa}&cliente_id=${company?.id}`
           );
         } catch (error) {
           alert("Erro ao fazer Upload");
           setLoading(false);
+          setData([]);
           throw "exit";
         }
       }
+      alert("Upload feito com sucesso")
+      setData([]);
       setLoading(false);
     }
   }
@@ -182,10 +195,10 @@ export function CurrentCompanyCSV() {
   const conditionalRowStyles = [
     {
       when: (row: ResponseCSV) =>
-        row.nome.length == 0 ||
-        row.cpf.length == 0 ||
-        row.codPessoa.length == 0 ||
-        row.chapa.length == 0,
+        row.nome?.length == 0 ||
+        row.cpf?.length == 0 ||
+        row.codpessoa?.length == 0 ||
+        row.chapa?.length == 0,
       style: {
         backgroundColor: "rgba(242, 38, 19, 0.9)",
         color: "white",
@@ -201,7 +214,7 @@ export function CurrentCompanyCSV() {
       {loading ? (
         <Loader />
       ) : (
-        <Container>
+        <Container style={{display: loading?"none":"flex"}} >
           <Header>
             <IoReturnUpBackOutline
               className={"icon"}
